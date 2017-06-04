@@ -16,7 +16,7 @@
     (fn []
       (if (empty? (:content @shows))
         [:div "Sorry, no list available :("]
-        [:table.shows-list.table
+        [:table.shows-list.table.table-striped
          [:thead
           [:tr
            [:th "Poster"]
@@ -56,21 +56,25 @@
 (defn show-panel [panel-name]
   [panels panel-name])
 
+(defn- is-active
+  [actual expected]
+  (when (= actual expected) "active"))
+
 (defn show-menu
-  []
+  [panel-name]
   [:nav.navbar.navbar-inverse.navbar-fixed-top
    [:div.container
     [:div.navbar-header
      [:a.navbar-brand {:href "#/"} "Clojurescript Demo"]]
     [:div.collapse.navbar-collapse {:id "navbar"}
      [:ul.nav.navbar-nav
-      [:li.active {:id "home-menu"} [:a {:href "#/"} "Home"]]
-      [:li {:id "about-menu"} [:a {:href "#/about"} "About"]]]]]])
+      [:li {:id "home-menu" :class (is-active panel-name :home-panel)} [:a {:href "#/"} "Home"]]
+      [:li {:id "about-menu" :class (is-active panel-name :about-panel)} [:a {:href "#/about"} "About"]]]]]])
 
 (defn main-panel []
   (let [active-panel (re-frame/subscribe [:active-panel])]
     (fn []
       [:div.something
-       [show-menu]
+       [show-menu @active-panel]
        [:div.container
         [show-panel @active-panel]]])))
