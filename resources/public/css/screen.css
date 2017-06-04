@@ -1,3 +1,15 @@
 body {
-  color: blueviolet;
+  padding-top: 50px;
+}
+
+.shows-list .poster img {
+  width: 100px;
+}
+
+.shows-list .name {
+  white-space: nowrap;
+}
+
+.shows-list .description {
+  width: 80%;
 }

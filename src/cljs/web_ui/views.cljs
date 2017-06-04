@@ -5,35 +5,44 @@
 ;; home
 (defn display-shows
   [shows]
-  (for [{:keys [name description]} shows]
-    [:li.show {:key name}
-     [:div.name name]
-     [:div.description description]]))
+  (for [{:keys [name description poster]} shows]
+    [:tr {:key name}
+     [:td.poster [:img {:src poster :alt "Poster for the show"}]]
+     [:td.name name]
+     [:td.description description]]))
 
 (defn shows-panel []
   (let [shows (re-frame/subscribe [:shows])]
     (fn []
-      [:h1 "List of TV shows"
-       (if (empty? (:content @shows))
-         [:div "Sorry, no list :("]
-         [:ul.shows-list
-          (display-shows (:content @shows))])])))
+      (if (empty? (:content @shows))
+        [:div "Sorry, no list available :("]
+        [:table.shows-list.table
+         [:thead
+          [:tr
+           [:th "Poster"]
+           [:th "Name"]
+           [:th "Description"]]]
+         [:tbody
+          (display-shows (:content @shows))]]))))
 
 (defn home-panel
   []
   (let [ready? (re-frame/subscribe [:initialised?])]
     [:div.home-panel
+     [:div.page-header
+      [:h1 "TV shows"]
+      [:p.lead "List of TV shows obtained from the local API"]]
      (if-not @ready?
        [:div "Loading shows ... please wait... "]
-       [shows-panel])
-     [:div [:a {:href "#/about"} "go to About Page"]]]))
+       [shows-panel])]))
 
 ;; about
 
 (defn about-panel []
   (fn []
-    [:div "This is the About Page."
-     [:div [:a {:href "#/"} "go to Home Page"]]]))
+    [:div.about-panel.page-header
+     [:h1 "This is the About Page."]
+     [:p.lead "Demo done to show Clojurescript + re-frame"]]))
 
 
 ;; main
@@ -47,7 +56,21 @@
 (defn show-panel [panel-name]
   [panels panel-name])
 
+(defn show-menu
+  []
+  [:nav.navbar.navbar-inverse.navbar-fixed-top
+   [:div.container
+    [:div.navbar-header
+     [:a.navbar-brand {:href "#/"} "Clojurescript Demo"]]
+    [:div.collapse.navbar-collapse {:id "navbar"}
+     [:ul.nav.navbar-nav
+      [:li.active {:id "home-menu"} [:a {:href "#/"} "Home"]]
+      [:li {:id "about-menu"} [:a {:href "#/about"} "About"]]]]]])
+
 (defn main-panel []
   (let [active-panel (re-frame/subscribe [:active-panel])]
     (fn []
-      [show-panel @active-panel])))
+      [:div.something
+       [show-menu]
+       [:div.container
+        [show-panel @active-panel]]])))

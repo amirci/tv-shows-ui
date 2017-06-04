@@ -18,5 +18,4 @@
 (re-frame/reg-sub
   :initialised?
   (fn  [{shows :shows} _]
-    (and (not (empty? (:content shows)))
-         (not (db/status-loading? shows)))))
+    (not (db/status-loading? shows))))
