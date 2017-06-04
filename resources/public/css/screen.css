@@ -10,8 +10,12 @@ body {
   width: 100px;
 }
 
-.shows-list .name {
-  white-space: nowrap;
+.shows-list .family {
+  text-align: center;
+}
+
+.shows-list .family i {
+  font-size: 30px;
 }
 
 .shows-list .description {

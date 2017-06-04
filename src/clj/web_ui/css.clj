@@ -8,5 +8,7 @@
   [:.shows-list
     [:.poster 
      [:img {:width :100px}]]
-    [:.name {:white-space :nowrap}]
+    [:.family {:text-align :center}
+     [:i {:font-size :30px}]]
+    ;[:.name {:white-space :nowrap}]
     [:.description {:width :80%}]])

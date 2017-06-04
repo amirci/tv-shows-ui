@@ -3,7 +3,8 @@
     [ajax.core :as ajax]
     [day8.re-frame.http-fx]
     [re-frame.core :as re-frame]
-    [web-ui.db :as db]))
+    [web-ui.db :as db]
+    [tv-lib.core :as lib]))
 
 (re-frame/reg-event-db
  :initialize-db
@@ -18,7 +19,7 @@
 (re-frame/reg-event-db
   :loading-shows-success
   (fn [db [_ {shows :shows :as response}]]
-    (assoc db :shows (db/status-loaded shows))))
+    (assoc db :shows (->> shows (sort-by :name lib/cmp-without-the) db/status-loaded))))
 
 (re-frame/reg-event-db
   :loading-shows-failure

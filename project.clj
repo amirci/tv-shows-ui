@@ -7,6 +7,7 @@
                  [secretary "1.2.3"]
                  [garden "1.3.2"]
                  [day8.re-frame/http-fx "0.1.3"]
+                 [tv-lib "0.1.1-SNAPSHOT"]
                  [ns-tracker "0.3.0"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]

@@ -1,15 +1,27 @@
 (ns web-ui.views
-    (:require [re-frame.core :as re-frame]))
+  (:require 
+    [re-frame.core :as re-frame]
+    [tv-lib.core :as lib]))
 
 
 ;; home
+(defn- family-icon
+  [show]
+  (if (lib/family-show? show) 
+    :fa-thumbs-o-up 
+    :fa-thumbs-o-down))
+
 (defn display-shows
   [shows]
-  (for [{:keys [name description poster]} shows]
+  (for [{:keys [name description poster] :as show} shows]
     [:tr {:key name}
      [:td.poster [:img {:src poster :alt "Poster for the show"}]]
-     [:td.name name]
-     [:td.description description]]))
+     [:td.name.description 
+      [:h4 name]
+      [:p description]]
+     ;[:td.description description]
+     [:td.family
+      [:i.fa {:class (family-icon show)}]]]))
 
 (defn shows-panel []
   (let [shows (re-frame/subscribe [:shows])]
@@ -20,8 +32,9 @@
          [:thead
           [:tr
            [:th "Poster"]
-           [:th "Name"]
-           [:th "Description"]]]
+           [:th "Name & Description"]
+           ;[:th "Description"]
+           [:th "Family?"]]]
          [:tbody
           (display-shows (:content @shows))]]))))
 
