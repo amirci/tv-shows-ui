@@ -6,20 +6,27 @@
 (defn display-shows
   [shows]
   (for [{:keys [name description]} shows]
-    [:li.show
+    [:li.show {:key name}
      [:div.name name]
      [:div.description description]]))
 
-(defn home-panel []
+(defn shows-panel []
   (let [shows (re-frame/subscribe [:shows])]
     (fn []
       [:h1 "List of TV shows"
        (if (empty? @shows)
          [:div "Sorry, no list :("]
          [:ul.shows-list
-          (display-shows @shows)])
-       [:div [:a {:href "#/about"} "go to About Page"]]])))
+          (display-shows @shows)])])))
 
+(defn home-panel
+  []
+  (let [ready? (re-frame/subscribe [:initialised?])]
+    [:div.home-panel
+     (if-not @ready?
+       [:div "Loading shows ... please wait... "]
+       [shows-panel])
+     [:div [:a {:href "#/about"} "go to About Page"]]]))
 
 ;; about
 

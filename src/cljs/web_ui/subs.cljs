@@ -11,3 +11,9 @@
  :active-panel
  (fn [db _]
    (:active-panel db)))
+
+(re-frame/reg-sub
+  :initialised?
+  (fn  [db _]
+    (and (not (empty? (:shows db)))
+         (not (:shows-loading? db)))))
