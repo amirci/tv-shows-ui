@@ -14,10 +14,10 @@
   (let [shows (re-frame/subscribe [:shows])]
     (fn []
       [:h1 "List of TV shows"
-       (if (empty? @shows)
+       (if (empty? (:content @shows))
          [:div "Sorry, no list :("]
          [:ul.shows-list
-          (display-shows @shows)])])))
+          (display-shows (:content @shows))])])))
 
 (defn home-panel
   []

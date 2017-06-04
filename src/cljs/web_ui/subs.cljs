@@ -1,6 +1,9 @@
 (ns web-ui.subs
-    (:require-macros [reagent.ratom :refer [reaction]])
-    (:require [re-frame.core :as re-frame]))
+  (:require-macros [reagent.ratom :refer [reaction]])
+  (:require 
+    [re-frame.core :as re-frame]
+    [web-ui.db :as db]))
+
 
 (re-frame/reg-sub
  :shows
@@ -14,6 +17,6 @@
 
 (re-frame/reg-sub
   :initialised?
-  (fn  [db _]
-    (and (not (empty? (:shows db)))
-         (not (:shows-loading? db)))))
+  (fn  [{shows :shows} _]
+    (and (not (empty? (:content shows)))
+         (not (db/status-loading? shows)))))

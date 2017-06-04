@@ -18,8 +18,12 @@
 (re-frame/reg-event-db
   :loading-shows-success
   (fn [db [_ {shows :shows :as response}]]
-    (.log js/console "Loading the shows!")
-    (assoc db :shows shows :shows-loading? false)))
+    (assoc db :shows (db/status-loaded shows))))
+
+(re-frame/reg-event-db
+  :loading-shows-failure
+  (fn [db [_ _]]
+    (assoc db :shows (db/status-failure "Couldn't load the tv shows"))))
 
 (re-frame/reg-event-fx
   :load-tv-shows 
@@ -31,4 +35,4 @@
                   :response-format (ajax/json-response-format {:keywords? true}) 
                   :on-success      [:loading-shows-success]
                   :on-failure      [:loading-shows-failure]}
-     :db (assoc db :shows-loading? true)}))
+     :db (assoc db :shows (db/status-loading))}))
